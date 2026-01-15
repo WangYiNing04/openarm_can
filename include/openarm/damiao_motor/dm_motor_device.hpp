@@ -1,3 +1,11 @@
+/*
+ * @Author: wang yining
+ * @Date: 2026-01-15 16:20:20
+ * @LastEditTime: 2026-01-15 16:57:53
+ * @FilePath: /openarm_can/include/openarm/damiao_motor/dm_motor_device.hpp
+ * @Description: 
+ * e-mail: wangyining0408@outlook.com
+ */
 // Copyright 2025 Enactic, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,6 +48,8 @@ public:
     Motor& get_motor() { return motor_; }
     void set_callback_mode(CallbackMode callback_mode) { callback_mode_ = callback_mode; }
     void set_ctrl_mode_all(int mode);
+    ControlMode get_control_mode() const { return control_mode_; }
+    void set_control_mode(ControlMode control_mode) { control_mode_ = control_mode; }
 
 private:
     std::vector<uint8_t> get_data_from_frame(const can_frame& frame);
@@ -47,5 +57,6 @@ private:
     Motor& motor_;
     CallbackMode callback_mode_;
     bool use_fd_;  // Track if using CAN-FD
+    ControlMode control_mode_ = ControlMode::MIT;
 };
 }  // namespace openarm::damiao_motor

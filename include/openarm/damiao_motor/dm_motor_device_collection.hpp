@@ -1,7 +1,7 @@
 /*
  * @Author: wang yining
  * @Date: 2025-12-29 23:56:31
- * @LastEditTime: 2026-01-02 19:34:33
+ * @LastEditTime: 2026-01-15 16:58:27
  * @FilePath: /openarm_can/include/openarm/damiao_motor/dm_motor_device_collection.hpp
  * @Description: 
  * e-mail: wangyining0408@outlook.com
@@ -54,6 +54,10 @@ public:
     void query_param_one(int i, int RID);
     void query_param_all(int RID);
 
+    // Control mode operations
+    void set_control_mode_one(int i, ControlMode mode);
+    void set_control_mode_all(ControlMode mode);
+
     // MIT control operations
     void mit_control_one(int i, const MITParam& mit_param);
     void mit_control_all(const std::vector<MITParam>& mit_params);
@@ -61,6 +65,10 @@ public:
     // PosVel control operation
     void posvel_control_one(int i, const PosVelParam& posvel_param);
     void posvel_control_all(const std::vector<PosVelParam>& posvel_params);
+
+    // PosForce control operation
+    void posforce_control_one(int i, const PosForceParam& posforce_param);
+    void posforce_control_all(const std::vector<PosForceParam>& posforce_params);
 
     // Control mode operation
     void set_ctrl_mode_all(int mode);
