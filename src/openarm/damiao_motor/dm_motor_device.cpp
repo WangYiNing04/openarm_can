@@ -113,4 +113,18 @@ canfd_frame DMCANDevice::create_canfd_frame(canid_t send_can_id, std::vector<uin
     return frame;
 }
 
+// void DMCANDevice::set_ctrl_mode_all(int mode) {
+//     // Example implementation: send a control mode command to the motor
+//     CANPacket ctrl_mode_packet = CanPacketEncoder::create_set_ctrl_mode_command(motor_, mode);
+//     if (use_fd_) {
+//         canfd_frame frame = create_canfd_frame(ctrl_mode_packet.send_can_id, ctrl_mode_packet.data);
+//         can_socket_.write_canfd_frame(frame);
+//     } else {
+//         can_frame frame = create_can_frame(ctrl_mode_packet.send_can_id, ctrl_mode_packet.data);
+//         can_socket_.write_can_frame(frame);
+//     }
+// }
+
+// // canbus::CANSocket& can_socket_;
+
 }  // namespace openarm::damiao_motor

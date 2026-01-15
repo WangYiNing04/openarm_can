@@ -1,44 +1,37 @@
-# Copyright 2025 Enactic, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
+'''
+Author: wang yining
+Date: 2025-12-29 23:56:31
+LastEditTime: 2025-12-31 04:40:55
+FilePath: /openarm_can/python/examples/test_posvel.py
+Description: 
+e-mail: wangyining0408@outlook.com
+'''
 import openarm_can as oa
 import time
-# Create OpenArm instance
 
-arm = oa.OpenArm("can0", True)
+arm = oa.OpenArm("vcan0", False)
 
-# Initialize arm motors
-motor_types = [oa.MotorType.DM4310]
-send_ids = [0x0A]
-recv_ids = [0x1A]
+motor_types = [oa.MotorType.DM8009, oa.MotorType.DM8009]
+send_ids = [0x01, 0x02]
+recv_ids = [0x11, 0x12]
+
 arm.init_arm_motors(motor_types, send_ids, recv_ids)
 
-# Use high-level operations
-arm.enable_all()
-arm.recv_all()
-
-# return to zero position
 arm.set_callback_mode_all(oa.CallbackMode.STATE)
-arm.get_arm().posvel_control_all([oa.PosVelParam(3.14 * 4, 20)])
+arm.enable_all()
+# arm.disable_all()
+target_pos = 2.0  # rad，给远一点
 
-arm.recv_all()
-
-# read motor position
 while True:
+    arm.get_arm().posvel_control_one(
+        1,
+        oa.PosVelParam(target_pos, 10)
+    )
+
     arm.refresh_all()
     arm.recv_all()
+
     for motor in arm.get_arm().get_motors():
-        print(motor.get_position())
-    for motor in arm.get_gripper().get_motors():
-        print(motor.get_position())
+        print("pos:", motor.get_position())
+
+    time.sleep(0.01)

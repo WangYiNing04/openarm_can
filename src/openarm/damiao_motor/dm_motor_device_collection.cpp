@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <openarm/damiao_motor/dm_motor_device_collection.hpp>
+#include "openarm/damiao_motor/dm_motor_device_collection.hpp"
 
 namespace openarm::damiao_motor {
 
@@ -75,6 +76,14 @@ void DMDeviceCollection::set_callback_mode_all(CallbackMode callback_mode) {
     }
 }
 
+
+// void DMDeviceCollection::set_ctrl_mode_all(int mode) {
+//     for (auto dm_device : get_dm_devices()) { 
+//         auto packet = CanPacketEncoder::create_set_ctrl_mode_command(dm_device->get_motor(), mode);
+//         can_socket_.write_can_frame(packet);
+//     }
+// }
+
 void DMDeviceCollection::query_param_one(int i, int RID) {
     CANPacket param_query =
         CanPacketEncoder::create_query_param_command(get_dm_devices()[i]->get_motor(), RID);
@@ -121,6 +130,16 @@ void DMDeviceCollection::posvel_control_one(int i, const PosVelParam& posvel_par
 void DMDeviceCollection::posvel_control_all(const std::vector<PosVelParam>& posvel_params) {
     for (size_t i = 0; i < posvel_params.size(); i++) {
         posvel_control_one(i, posvel_params[i]);
+    }
+}
+
+
+void DMDeviceCollection::set_ctrl_mode_all(int mode) {
+    for (auto dm_device : get_dm_devices()) { 
+        // 1. 生成 packet
+        auto packet = CanPacketEncoder::create_set_ctrl_mode_command(dm_device->get_motor(), mode);
+        // 2. 使用类内置方法发送（它会自动处理 CAN/CANFD 转换和 frame 构造）
+        send_command_to_device(dm_device, packet);
     }
 }
 

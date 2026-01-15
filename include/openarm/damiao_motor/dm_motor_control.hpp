@@ -72,15 +72,20 @@ public:
                                                    const PosVelParam& posvel_param);
     static CANPacket create_query_param_command(const Motor& motor, int RID);
     static CANPacket create_refresh_command(const Motor& motor);
-
+    static CANPacket create_set_ctrl_mode_command(const Motor& motor, uint32_t mode);
+    
 private:
+
     static std::vector<uint8_t> pack_mit_control_data(MotorType motor_type,
                                                       const MITParam& mit_param);
+
     static std::vector<uint8_t> pack_posvel_control_data(MotorType motor_type,
                                                          const PosVelParam& posvel_param);
 
     static std::vector<uint8_t> pack_query_param_data(uint32_t send_can_id, int RID);
     static std::vector<uint8_t> pack_command_data(uint8_t cmd);
+    
+    static std::vector<uint8_t> pack_write_param_data(uint32_t send_can_id, uint8_t RID, uint32_t value);
 
     static double limit_min_max(double x, double min, double max);
     static uint16_t double_to_uint(double x, double x_min, double x_max, int bits);

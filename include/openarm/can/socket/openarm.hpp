@@ -1,3 +1,11 @@
+/*
+ * @Author: wang yining
+ * @Date: 2025-12-29 23:56:31
+ * @LastEditTime: 2026-01-02 18:34:44
+ * @FilePath: /openarm_can/include/openarm/can/socket/openarm.hpp
+ * @Description: 
+ * e-mail: wangyining0408@outlook.com
+ */
 // Copyright 2025 Enactic, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -57,6 +65,7 @@ public:
     // Tuning this value may improve the performance but should be done with caution.
     void recv_all(int timeout_us = 500);
     void set_callback_mode_all(damiao_motor::CallbackMode callback_mode);
+    void set_ctrl_mode_all(uint32_t mode);
     void query_param_all(int RID);
 
 private:

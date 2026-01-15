@@ -204,6 +204,8 @@ NB_MODULE(openarm_can, m) {
     nb::class_<CanPacketEncoder>(m, "CanPacketEncoder")
         .def_static("create_refresh_command", &CanPacketEncoder::create_refresh_command,
                     nb::arg("motor"))
+        .def_static("create_set_ctrl_mode_command", &CanPacketEncoder::create_set_ctrl_mode_command,
+            nb::arg("motor"), nb::arg("control_mode"))
         .def_static("create_enable_command", &CanPacketEncoder::create_enable_command,
                     nb::arg("motor"))
         .def_static("create_disable_command", &CanPacketEncoder::create_disable_command,
@@ -362,6 +364,7 @@ NB_MODULE(openarm_can, m) {
         .def("disable_all", &DMDeviceCollection::disable_all)
         .def("set_zero_all", &DMDeviceCollection::set_zero_all)
         .def("refresh_all", &DMDeviceCollection::refresh_all)
+        .def("set_ctrl_mode_all", &DMDeviceCollection::set_ctrl_mode_all, nb::arg("mode"))
         .def("set_callback_mode_all", &DMDeviceCollection::set_callback_mode_all,
              nb::arg("callback_mode"))
         .def("query_param_all", &DMDeviceCollection::query_param_all, nb::arg("rid"))
@@ -406,6 +409,7 @@ NB_MODULE(openarm_can, m) {
         .def("enable_all", &OpenArm::enable_all)
         .def("disable_all", &OpenArm::disable_all)
         .def("set_zero_all", &OpenArm::set_zero_all)
+        .def("set_ctrl_mode_all", &OpenArm::set_ctrl_mode_all, nb::arg("mode"))
         .def("refresh_all", &OpenArm::refresh_all)
         .def("recv_all", &OpenArm::recv_all, nb::arg("timeout_us") = 500)
         .def("set_callback_mode_all", &OpenArm::set_callback_mode_all, nb::arg("callback_mode"))

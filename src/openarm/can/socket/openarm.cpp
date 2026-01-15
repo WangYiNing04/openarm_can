@@ -67,6 +67,12 @@ void OpenArm::set_zero_all() {
     }
 }
 
+void OpenArm::set_ctrl_mode_all(uint32_t mode) {
+    for (damiao_motor::DMDeviceCollection* device_collection : sub_dm_device_collections_) {
+        device_collection->set_ctrl_mode_all(mode);
+    }
+}
+
 void OpenArm::refresh_all() {
     for (damiao_motor::DMDeviceCollection* device_collection : sub_dm_device_collections_) {
         device_collection->refresh_all();

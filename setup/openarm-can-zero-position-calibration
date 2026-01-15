@@ -257,14 +257,14 @@ def _run_left_sequence(openarm, arm, grip):
 def main():
     parser = argparse.ArgumentParser(
         description='Zero-pos calibration (compact)')
-    parser.add_argument('--canport', type=str, default='can0')
+    parser.add_argument('--canport', type=str, default='vcan0')
     parser.add_argument('--arm-side', type=str,
                         default='right_arm', choices=['right_arm', 'left_arm'])
     args = parser.parse_args()
     print(f"parser arg : {args}")
 
     # Init
-    openarm = oa.OpenArm(args.canport, True)
+    openarm = oa.OpenArm(args.canport, False)
     openarm.init_arm_motors(
         [oa.MotorType.DM8009, oa.MotorType.DM8009, oa.MotorType.DM4340, oa.MotorType.DM4340,
          oa.MotorType.DM4310, oa.MotorType.DM4310, oa.MotorType.DM4310],
@@ -277,6 +277,8 @@ def main():
     print("Enabling...")
     openarm.enable_all()
     time.sleep(0.1)
+
+    openarm.set_ctrl_mode_all(1)
     print("Enabled...")
 
     # Hold current pose (light PD)

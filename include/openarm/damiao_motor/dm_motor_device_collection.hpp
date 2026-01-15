@@ -1,3 +1,11 @@
+/*
+ * @Author: wang yining
+ * @Date: 2025-12-29 23:56:31
+ * @LastEditTime: 2026-01-02 19:34:33
+ * @FilePath: /openarm_can/include/openarm/damiao_motor/dm_motor_device_collection.hpp
+ * @Description: 
+ * e-mail: wangyining0408@outlook.com
+ */
 // Copyright 2025 Enactic, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,6 +61,9 @@ public:
     // PosVel control operation
     void posvel_control_one(int i, const PosVelParam& posvel_param);
     void posvel_control_all(const std::vector<PosVelParam>& posvel_params);
+
+    // Control mode operation
+    void set_ctrl_mode_all(int mode);
 
     // Device collection access
     std::vector<Motor> get_motors() const;

@@ -39,6 +39,7 @@ public:
     // Getter method to access motor state
     Motor& get_motor() { return motor_; }
     void set_callback_mode(CallbackMode callback_mode) { callback_mode_ = callback_mode; }
+    void set_ctrl_mode_all(int mode);
 
 private:
     std::vector<uint8_t> get_data_from_frame(const can_frame& frame);

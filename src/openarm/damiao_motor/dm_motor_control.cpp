@@ -19,6 +19,7 @@
 #include <openarm/damiao_motor/dm_motor_control.hpp>
 #include <thread>
 
+
 namespace openarm::damiao_motor {
 
 // Command creation methods (return data array, can_id handled externally)
@@ -61,6 +62,12 @@ CANPacket CanPacketEncoder::create_refresh_command(const Motor& motor) {
                                  0x00,
                                  0x00};
     return {0x7FF, data};
+}
+
+CANPacket CanPacketEncoder::create_set_ctrl_mode_command(const Motor& motor, uint32_t mode) {
+    // 寄存器操作统一使用 0x7FF 作为 CAN ID
+    // 控制模式寄存器地址 (RID) 固定为 10
+    return {0x7FF, pack_write_param_data(motor.get_send_can_id(), 10, mode)};
 }
 
 // Data interpretation methods (use recv_can_id for received data)
@@ -151,6 +158,19 @@ std::vector<uint8_t> CanPacketEncoder::pack_query_param_data(uint32_t send_can_i
             0x00,
             0x00,
             0x00};
+}
+
+std::vector<uint8_t> CanPacketEncoder::pack_write_param_data(uint32_t send_can_id, uint8_t RID, uint32_t value) {
+    return {
+        static_cast<uint8_t>(send_can_id & 0xFF),         // Data[0]: 电机 ID 低 8 位
+        static_cast<uint8_t>((send_can_id >> 8) & 0xFF),  // Data[1]: 电机 ID 高 8 位
+        0x55,                                            // Data[2]: 写入指令码 (Write)
+        RID,                                             // Data[3]: 寄存器地址
+        static_cast<uint8_t>(value & 0xFF),              // Data[4]: Value Byte 0 (LSB)
+        static_cast<uint8_t>((value >> 8) & 0xFF),       // Data[5]: Value Byte 1
+        static_cast<uint8_t>((value >> 16) & 0xFF),      // Data[6]: Value Byte 2
+        static_cast<uint8_t>((value >> 24) & 0xFF)       // Data[7]: Value Byte 3 (MSB)
+    };
 }
 
 std::vector<uint8_t> CanPacketEncoder::pack_command_data(uint8_t cmd) {
